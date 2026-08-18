@@ -7,7 +7,6 @@ CONFIG_TARGET_qualcommax=y
 CONFIG_TARGET_qualcommax_ipq60xx=y
 
 # 只编译 jdcloud_re-cs-02 单设备
-# 如果你需要兼容多设备，可以把下面两项改回 y
 # CONFIG_TARGET_MULTI_PROFILE is not set
 # CONFIG_TARGET_PER_DEVICE_ROOTFS is not set
 
@@ -57,10 +56,6 @@ CONFIG_IPQ_MEM_PROFILE_1024=y
 # 【修正】ATH11K 内存配置：启用 1G Profile 保证 WiFi 高负载不断流
 CONFIG_ATH11K_MEM_PROFILE_1G=y
 # CONFIG_ATH11K_MEM_PROFILE_512M is not set
-
-# ATH11K 内存配置：当前按 1G 处理
-# CONFIG_ATH11K_MEM_PROFILE_512M is not set
-CONFIG_ATH11K_MEM_PROFILE_1G=y
 
 # NSS SQM 脚本
 # 如果你不使用 SQM/NSS 队列限速，可以删除这一行
