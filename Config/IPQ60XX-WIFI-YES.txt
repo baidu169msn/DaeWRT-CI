@@ -43,22 +43,24 @@ CONFIG_KERNEL_PERF_EVENTS=y
 # CONFIG_KERNEL_PREEMPT_RCU is not set
 
 # ==============================================================================
-# NSS 基础配置
+# NSS 基础配置 (针对 1GB RAM 的雅典娜 RE-CS-02)
 # ==============================================================================
 
 # 如果你的源码已经内置 NSS 包，可保持关闭
-# 如果 make defconfig 后发现 kmod-qca-nss-drv / kmod-qca-nss-ecm 等丢失，
-# 再检查是否需要启用对应 NSS feed
 # CONFIG_FEED_nss_packages is not set
 # CONFIG_FEED_sqm_scripts_nss is not set
 
-# 内存配置：当前按 512MB 处理
-# CONFIG_IPQ_MEM_PROFILE_1024 is not set
-CONFIG_IPQ_MEM_PROFILE_512=y
+# 【修正】内存配置：雅典娜为 1GB RAM，必须启用 1024M Profile
+CONFIG_IPQ_MEM_PROFILE_1024=y
+# CONFIG_IPQ_MEM_PROFILE_512 is not set
 
-# ATH11K 内存配置：当前按 512M 处理
-# CONFIG_ATH11K_MEM_PROFILE_1G is not set
-CONFIG_ATH11K_MEM_PROFILE_512M=y
+# 【修正】ATH11K 内存配置：启用 1G Profile 保证 WiFi 高负载不断流
+CONFIG_ATH11K_MEM_PROFILE_1G=y
+# CONFIG_ATH11K_MEM_PROFILE_512M is not set
+
+# ATH11K 内存配置：当前按 1G 处理
+# CONFIG_ATH11K_MEM_PROFILE_512M is not set
+CONFIG_ATH11K_MEM_PROFILE_1G=y
 
 # NSS SQM 脚本
 # 如果你不使用 SQM/NSS 队列限速，可以删除这一行
