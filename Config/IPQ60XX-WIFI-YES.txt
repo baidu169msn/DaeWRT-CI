@@ -1,26 +1,23 @@
 #CMIOT GLINET LINKSYS QIHOO REDMI XIAOMI ZN JDCLOUD
-
 # ==============================================================================
 # 目标平台
 # ==============================================================================
 CONFIG_TARGET_qualcommax=y
 CONFIG_TARGET_qualcommax_ipq60xx=y
 
-# 只编译 jdcloud_re-cs-02 单设备
+# 单设备编译（关闭多设备矩阵，提升编译速度）
 # CONFIG_TARGET_MULTI_PROFILE is not set
 # CONFIG_TARGET_PER_DEVICE_ROOTFS is not set
 
 # ==============================================================================
-# 设备列表
+# 设备列表 (必须确保源码中存在此设备名)
 # ==============================================================================
 CONFIG_TARGET_DEVICE_qualcommax_ipq60xx_DEVICE_jdcloud_re-cs-02=y
 
 # ==============================================================================
-# Rootfs
+# Rootfs 镜像类型 (必须开启 SQUASHFS 才会生成刷机固件)
 # ==============================================================================
 CONFIG_TARGET_ROOTFS_SQUASHFS=y
-
-# 如果不需要 initramfs 救机/临时启动，保持关闭
 # CONFIG_TARGET_ROOTFS_INITRAMFS is not set
 
 # ==============================================================================
@@ -38,28 +35,19 @@ CONFIG_KERNEL_HUGETLB_PAGE=y
 CONFIG_KERNEL_MEMCG_SWAP_ENABLED=y
 CONFIG_KERNEL_NET_CLS_CGROUP=y
 CONFIG_KERNEL_PERF_EVENTS=y
-
 # CONFIG_KERNEL_PREEMPT_RCU is not set
 
 # ==============================================================================
 # NSS 基础配置 (针对 1GB RAM 的雅典娜 RE-CS-02)
 # ==============================================================================
-
-# 如果你的源码已经内置 NSS 包，可保持关闭
 # CONFIG_FEED_nss_packages is not set
 # CONFIG_FEED_sqm_scripts_nss is not set
 
-# 【修正】内存配置：雅典娜为 1GB RAM，必须启用 1024M Profile
 CONFIG_IPQ_MEM_PROFILE_1024=y
 # CONFIG_IPQ_MEM_PROFILE_512 is not set
 
-# 【修正】ATH11K 内存配置：启用 1G Profile 保证 WiFi 高负载不断流
 CONFIG_ATH11K_MEM_PROFILE_1G=y
 # CONFIG_ATH11K_MEM_PROFILE_512M is not set
 
-# NSS SQM 脚本
-# 如果你不使用 SQM/NSS 队列限速，可以删除这一行
 CONFIG_PACKAGE_sqm-scripts-nss=y
-
-# NSS crypto
 CONFIG_PACKAGE_kmod-qca-nss-crypto=y
