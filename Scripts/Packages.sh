@@ -21,8 +21,6 @@ UPDATE_PACKAGE() {
 # 1. 主力透明代理 DAED
 UPDATE_PACKAGE "luci-app-daed" "QiuSimons/luci-app-daed" "kix"
 
-# 【优化】已删除 partexp 和 diskman
-
 # 2. 清理冲突插件
 rm -rf ../feeds/luci/applications/luci-app-{passwall*,mosdns,dockerman,bypass*}
 find ../package/feeds -maxdepth 4 -name 'luci-app-passwall*' -exec rm -rf {} + 2>/dev/null || true
@@ -33,7 +31,7 @@ if [ -f "luci-app-daed/daed/Makefile" ]; then
   sed -i 's|github.com/daeuniverse/quic-go|github.com/olicesx/quic-go|g' luci-app-daed/daed/Makefile || true
 fi
 
-# 4. 生成 DAED Hotplug (优化：用 ping 替代 nslookup，更轻量可靠)
+# 4. 生成 DAED Hotplug (使用 ping 替代 nslookup)
 HOTPLUG_DIR="$GITHUB_WORKSPACE/wrt/files/etc/hotplug.d/iface"
 mkdir -p "$HOTPLUG_DIR"
 
@@ -55,7 +53,7 @@ cat > "$HOTPLUG_DIR/99-daed-start" <<'EOF'
 EOF
 chmod +x "$HOTPLUG_DIR/99-daed-start"
 
-# 5. 同步自定义 package (如果存在)
+# 5. 同步自定义 package
 if [ -d "$GITHUB_WORKSPACE/package" ]; then
   cp -r "$GITHUB_WORKSPACE/package/." ./ 2>/dev/null || true
 fi
