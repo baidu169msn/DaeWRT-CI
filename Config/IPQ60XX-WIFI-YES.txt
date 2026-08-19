@@ -5,17 +5,17 @@
 CONFIG_TARGET_qualcommax=y
 CONFIG_TARGET_qualcommax_ipq60xx=y
 
-# 单设备编译（关闭多设备矩阵，提升编译速度）
-# CONFIG_TARGET_MULTI_PROFILE is not set
-# CONFIG_TARGET_PER_DEVICE_ROOTFS is not set
+# 【终极修复】必须开启 MULTI_PROFILE，否则 qualcommax 的 Kconfig 会强制回退到默认开发板 (8devices_mango-dvk)！
+CONFIG_TARGET_MULTI_PROFILE=y
+CONFIG_TARGET_PER_DEVICE_ROOTFS=y
 
 # ==============================================================================
-# 设备列表 (必须确保源码中存在此设备名)
+# 设备列表 (只保留雅典娜)
 # ==============================================================================
 CONFIG_TARGET_DEVICE_qualcommax_ipq60xx_DEVICE_jdcloud_re-cs-02=y
 
 # ==============================================================================
-# Rootfs 镜像类型 (必须开启 SQUASHFS 才会生成刷机固件)
+# Rootfs
 # ==============================================================================
 CONFIG_TARGET_ROOTFS_SQUASHFS=y
 # CONFIG_TARGET_ROOTFS_INITRAMFS is not set
