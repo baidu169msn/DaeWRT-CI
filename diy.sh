@@ -6,7 +6,6 @@ set -euo pipefail
 # ==============================================================================
 WRT_REPO='https://github.com/VIKINGYFY/immortalwrt'
 WRT_BRANCH='main'
-
 # WRT_REPO='https://github.com/davidtall/immortalwrt'
 # WRT_BRANCH='viking-main'
 
@@ -35,7 +34,7 @@ fi
 # 环境变量
 # ==============================================================================
 export WRT_DIR=wrt
-export GITHUB_WORKSPACE="${GITHUB_WORKSPACE:-$(pwd)}"
+export GITHUB_WORKSPACE="${GITHUB_WORKSPACE:-$(cd "$(dirname "$0")" && pwd)}"
 export WRT_DATE=$(TZ=Asia/Shanghai date +"%y.%m.%d_%H.%M.%S")
 export WRT_VER=$(echo "$WRT_REPO" | cut -d '/' -f 5-)-$WRT_BRANCH
 export WRT_NAME='OWRT'
@@ -54,7 +53,12 @@ if [ ! -f "$CONFIG_FILE" ]; then
 fi
 
 export WRT_TYPE=$(sed -n "1{s/^#//;s/\r$//;p;q}" "$CONFIG_FILE")
-export WRT_ARCH=$(sed -n 's/^CONFIG_TARGET_DEVICE_.*_DEVICE_\([^=]*\)=y/\1/p' "$CONFIG_FILE" | head -n 1)
+
+# 【修复】分离 subtarget 与 device，防止路径拼接错误
+export WRT_SUBTARGET=$(grep -m 1 -oP '^CONFIG_TARGET_[a-z0-9]+_\K[a-z0-9]+(?==y)' "$CONFIG_FILE")
+export WRT_DEVICE=$(sed -n 's/^CONFIG_TARGET_DEVICE_.*_DEVICE_\([^=]*\)=y/\1/p' "$CONFIG_FILE" | head -n 1)
+export WRT_ARCH="$WRT_SUBTARGET"
+
 export WRT_TARGET=$(grep -m 1 -oP '^CONFIG_TARGET_\K[\w]+(?==y)' "$CONFIG_FILE" | tr '[:lower:]' '[:upper:]')
 
 # ==============================================================================
@@ -105,10 +109,8 @@ generate_config
 patch_stdcountof() {
   find . -type f \( -name "options.h" -o -name "Makefile.in" -o -name "Makefile.am" \) \
     -exec sed -i 's|#include <stdcountof\.h>|#define countof(a) (sizeof(a) / sizeof(*(a)))|g' {} + 2>/dev/null || true
-
   grep -rl "stdcountof.h" . 2>/dev/null | xargs -r sed -i 's|#include <stdcountof\.h>|#define countof(a) (sizeof(a) / sizeof(*(a)))|g' 2>/dev/null || true
 }
-
 patch_stdcountof
 
 # ==============================================================================
